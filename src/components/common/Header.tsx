@@ -14,13 +14,15 @@ import {
   LayoutGrid,
   LogOut,
   Settings,
-  LayoutDashboard
+  LayoutDashboard,
+  Download
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '@/src/lib/utils';
 import { useShop } from '@/src/context/ShopContext';
 import { useAuth } from '@/src/context/AuthContext';
+import { useInstall } from '@/src/context/InstallPromptContext';
 import { formatPrice } from '@/src/data/mockData';
 
 export default function Header({ cartCount, onCategorySelect }: { cartCount: number, onCategorySelect: (category: string) => void }) {
@@ -28,6 +30,7 @@ export default function Header({ cartCount, onCategorySelect }: { cartCount: num
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const { wishlist, cart } = useShop();
   const { user, logout, isAdmin } = useAuth();
+  const { canInstall, promptInstall } = useInstall();
   const navigate = useNavigate();
 
   const cartTotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
@@ -58,14 +61,22 @@ export default function Header({ cartCount, onCategorySelect }: { cartCount: num
                 <span>Marketplace updates every minute</span>
              </div>
           </div>
-          <div className="flex items-center space-x-6">
-             <Link to="/auth" className="hover:text-[#f59e0b] transition-colors">Become a Seller</Link>
-             <span className="text-white/10">|</span>
-             <Link to="/wishlist" className="hover:text-[#f59e0b] transition-colors flex items-center gap-1">
-                <Heart size={14} className="text-red-400" />
-                Wishlist ({wishlist.length})
-             </Link>
-          </div>
+            <div className="flex items-center space-x-6">
+              <Link to="/auth" className="hover:text-[#f59e0b] transition-colors">Become a Seller</Link>
+              <button
+                onClick={promptInstall}
+                className="hidden lg:flex items-center gap-1.5 hover:text-[#f59e0b] transition-colors font-black"
+                title="Install Lumina app"
+              >
+                <Download size={14} className="text-[#f59e0b]" />
+                Get App
+              </button>
+              <span className="text-white/10">|</span>
+              <Link to="/wishlist" className="hover:text-[#f59e0b] transition-colors flex items-center gap-1">
+                 <Heart size={14} className="text-red-400" />
+                 Wishlist ({wishlist.length})
+              </Link>
+            </div>
         </div>
       </div>
 
