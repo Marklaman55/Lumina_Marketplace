@@ -25,18 +25,29 @@ export default function Auth() {
     e.preventDefault();
     setIsLoading(true);
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    if (isLogin) {
-      await login(formData.email, formData.password);
-    } else {
-      await register(formData);
+    try {
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      let authenticatedUser;
+      if (isLogin) {
+        authenticatedUser = await login(formData.email, formData.password);
+      } else {
+        authenticatedUser = await register(formData);
+      }
+      
+      setIsLoading(false);
+      
+      // Role-based redirection
+      if (authenticatedUser?.role === 'admin') {
+        navigate('/admin/orders');
+      } else {
+        navigate('/shop');
+      }
+    } catch (error: any) {
+      setIsLoading(false);
+      alert(error.message || 'Authentication failed');
     }
-    
-    setIsLoading(false);
-    // RoleRedirect in App.tsx will handle the destination
-    navigate('/');
   };
 
   return (
@@ -68,15 +79,15 @@ export default function Auth() {
             <div className="space-y-2">
                <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-4">Full Name</label>
                <div className="relative">
-                  <User className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                  <input 
-                    type="text" 
-                    required 
-                    placeholder="E.g. John Doe"
-                    value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    className="w-full bg-gray-50 border-2 border-transparent focus:border-[#f59e0b] rounded-3xl py-5 pl-16 pr-8 text-sm font-bold outline-none transition-all"
-                  />
+                 <User className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                 <input 
+                   type="text" 
+                   required 
+                   placeholder="E.g. John Doe"
+                   value={formData.name}
+                   onChange={(e) => setFormData({...formData, name: e.target.value})}
+                   className="w-full bg-gray-50 border-2 border-transparent focus:border-[#f59e0b] rounded-3xl py-5 pl-16 pr-8 text-sm font-bold outline-none transition-all"
+                 />
                </div>
             </div>
           )}
@@ -93,22 +104,22 @@ export default function Auth() {
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
                   className="w-full bg-gray-50 border-2 border-transparent focus:border-[#f59e0b] rounded-3xl py-5 pl-16 pr-8 text-sm font-bold outline-none transition-all"
                 />
-             </div>
+              </div>
           </div>
 
           {!isLogin && (
             <div className="space-y-2">
                <label className="text-xs font-black text-gray-400 uppercase tracking-widest ml-4">Phone Number</label>
                <div className="relative">
-                  <Phone className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
-                  <input 
-                    type="tel" 
-                    required 
-                    placeholder="0712 345 678"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                    className="w-full bg-gray-50 border-2 border-transparent focus:border-[#f59e0b] rounded-3xl py-5 pl-16 pr-8 text-sm font-bold outline-none transition-all"
-                  />
+                 <Phone className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+                 <input 
+                   type="tel" 
+                   required 
+                   placeholder="0712 345 678"
+                   value={formData.phone}
+                   onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                   className="w-full bg-gray-50 border-2 border-transparent focus:border-[#f59e0b] rounded-3xl py-5 pl-16 pr-8 text-sm font-bold outline-none transition-all"
+                 />
                </div>
             </div>
           )}
@@ -132,7 +143,7 @@ export default function Auth() {
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
-             </div>
+              </div>
           </div>
 
           {!isLogin && (

@@ -1,8 +1,9 @@
-import { useState, ReactNode } from 'react';
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { useState, ReactNode, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { ShopProvider } from './context/ShopContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { AdminProvider } from './context/AdminContext';
+import { useIsMobile } from './hooks/useMediaQuery';
 
 // Layouts
 import UserLayout from './components/common/Layout';
@@ -41,9 +42,15 @@ function ProtectedRoute({ children, adminOnly = false }: { children: ReactNode, 
   return <>{children}</>;
 }
 
-function RoleRedirect() {
+function RoleRedirect({ selectedCategory, setSelectedCategory }: { selectedCategory: string, setSelectedCategory: (cat: string) => void }) {
   const { user, isAdmin } = useAuth();
-  if (!user) return <Home selectedCategory="All" setSelectedCategory={() => {}} />;
+  const isMobile = useIsMobile();
+  
+  if (isMobile) {
+    return <Navigate to="/shop" replace />;
+  }
+
+  if (!user) return <Home selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />;
   return isAdmin ? <Navigate to="/admin/orders" /> : <Navigate to="/shop" />;
 }
 
@@ -58,7 +65,7 @@ export default function App() {
             <Routes>
               {/* Public/User Routes */}
               <Route path="/" element={<UserLayout onCategorySelect={setSelectedCategory} />}>
-                <Route index element={<RoleRedirect />} />
+                <Route index element={<RoleRedirect selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />} />
                 <Route path="shop" element={<Shop />} />
                 <Route path="cart" element={<Cart />} />
                 <Route path="wishlist" element={<Wishlist />} />
