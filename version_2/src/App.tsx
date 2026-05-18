@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation, useNavigate } from
 import { ShopProvider } from './context/ShopContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { AdminProvider } from './context/AdminContext';
-import { InstallProvider } from './context/InstallPromptContext';
 import { useIsMobile } from './hooks/useMediaQuery';
 
 // Layouts
@@ -62,9 +61,8 @@ export default function App() {
     <AuthProvider>
       <AdminProvider>
         <ShopProvider>
-          <InstallProvider>
-            <BrowserRouter>
-              <Routes>
+          <BrowserRouter>
+            <Routes>
               {/* Public/User Routes */}
               <Route path="/" element={<UserLayout onCategorySelect={setSelectedCategory} />}>
                 <Route index element={<RoleRedirect selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />} />
@@ -93,8 +91,7 @@ export default function App() {
               
               <Route path="/auth" element={<Auth />} />
             </Routes>
-            </BrowserRouter>
-          </InstallProvider>
+          </BrowserRouter>
         </ShopProvider>
       </AdminProvider>
     </AuthProvider>

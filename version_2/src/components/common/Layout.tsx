@@ -3,7 +3,6 @@ import Header from './Header';
 import Footer from './Footer';
 import MobileToolbar from './MobileToolbar';
 import CartNotification from '../CartNotification';
-import PWAInstallBanner from './PWAInstallBanner';
 import { useShop } from '@/src/context/ShopContext';
 import { useAuth } from '@/src/context/AuthContext';
 
@@ -23,7 +22,6 @@ export default function Layout({ onCategorySelect }: { onCategorySelect: (cat: s
       <Footer />
       {!isAdmin && <MobileToolbar />}
       <CartNotification />
-      {!isAdmin && <PWAInstallBanner />}
     </div>
   );
 }

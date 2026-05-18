@@ -1,0 +1,6 @@
+{
+  "name": "Lumina Marketplace",
+  "description": "A premium multi-category eCommerce platform featuring a modern marketplace UI, fashion hero banners, and promotional product sections.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

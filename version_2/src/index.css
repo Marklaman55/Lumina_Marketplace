@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syncopate:wght@400;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Syncopate", sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  @apply bg-white text-gray-900 selection:bg-amber-100 selection:text-amber-900;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply tracking-tighter;
+}
+
+.container {
+  @apply max-w-[1440px] mx-auto;
+}
+
+/* Custom Utilities */
+.text-stroke-gray {
+  -webkit-text-stroke: 1px #e5e7eb;
+  color: transparent;
+}
+
+.outline-text {
+  -webkit-text-stroke: 1px currentColor;
+  color: transparent;
+}
+
+/* Swiper pagination customization */
+.hero-swiper .swiper-pagination-bullet {
+  @apply w-12 h-1.5 rounded-full bg-white/30 opacity-100 transition-all;
+}
+
+.hero-swiper .swiper-pagination-bullet-active {
+  @apply bg-white w-20;
+}
+
+/* No Scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: white;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #e5e7eb;
+}
+
+/* Glassmorphism */
+.glass {
+  @apply bg-white/70 backdrop-blur-xl border border-white/20;
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
